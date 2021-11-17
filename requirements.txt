@@ -1,0 +1,8 @@
+matplotlib==3.4.2
+numpy==1.19.3
+opencv_python==4.4.0.42
+scikit_learn==1.0.1
+torch==1.6.0
+torchvision==0.7.0
+umap==0.1.1
+umap_learn==0.5.2
