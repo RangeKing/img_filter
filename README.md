@@ -2,10 +2,15 @@
 
 ## 所需库
 matplotlib
+
 numpy
+
 opencv_python
+
 scikit_learn
+
 umap_learn
+
 pytorch
 
 ```
