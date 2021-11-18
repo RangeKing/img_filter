@@ -23,6 +23,7 @@ pip install -r requirements.txt
   2. 文件大小 - >10KB
   3. 图片尺寸 - 长&宽 > 256像素
   4. 图片梯度 - >50
+  5. RGB三通道直方图相似度差值之和 - >0.003
 * 高级数据筛选 img_advanced_filter.py
 
   1. 文件类型 - 通过file_suffix参数设置
@@ -30,14 +31,15 @@ pip install -r requirements.txt
   2. 降维特征图 - 利用ResNet50前7层提取图像特征图，在利用UMAP/t-SNE方法降维
 
 ## 参数设置
-root_dir - 输入文件路径
+root_dir - 输入文件路径列表
 
 file_suffix - 所需文件后缀名
 
 示例：
 
 ```
-root_dir = "../Image-Downloader-master/download_images/dog"
+root_dir = ["../Image-Downloader-master/download_images/dog",\
+            "../Image-Downloader-master/download_images/cat"]
 file_suffix = "jpeg|jpg|png"
 ```
 
