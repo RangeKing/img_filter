@@ -1,3 +1,11 @@
+"""
+# @file name        : img_advanced_filter.py
+# @created  by      : Mr.Lee
+# @modified by      : RangeKing
+# @creation date    : 2021-05-06
+# @modification date: 2021-11-17
+# @brief            : 高级图片筛选
+"""
 import os
 import re
 import cv2
@@ -98,37 +106,38 @@ def plot_embedding(data, type=None, text=None, title="", colors=None):
     return fig
 
 
-if __name__ == '__main__':
-    # root_dir = "../Image-Downloader-master/download_images/dog"
-    root_dir = r"F:\DeepLearning\Classification\cls_06\code\Image-Downloader-master\download_images\dog"
+if __name__ == '__main__':    
+    root_dir_list = ["../Image-Downloader-master/download_images/dog",\
+                     "../Image-Downloader-master/download_images/cat"]
     file_suffix = "jpeg|jpg|png"
-    remove_dir = os.path.join(root_dir,"remove")
-    if not os.path.exists(remove_dir):
-        os.makedirs(remove_dir)
+    for root_dir in root_dir_list:
+        remove_dir = os.path.join(root_dir,"remove")
+        if not os.path.exists(remove_dir):
+            os.makedirs(remove_dir)
 
-    # 模型初始化
-    model = ResNet50()
-    # 提取图像特征
-    feature_list = []
-    name_list = []
-    for img_name in os.listdir(root_dir)[:]:
-        # 对处理文件的类型进行过滤
-        if re.search(file_suffix, img_name) is None:
-            continue
-        img_path = os.path.join(root_dir,img_name)
-        mean, std = get_img_feature(model, img_path)
-        mean = mean.to('cpu').numpy().reshape(-1)
-        std = std.to('cpu').numpy().reshape(-1)
-        feature = np.concatenate((mean, std), 0)
-        print(feature.shape)
-        feature_list.append(feature)
-        name_list.append(img_name[8:10])
+        # 模型初始化
+        model = ResNet50()
+        # 提取图像特征
+        feature_list = []
+        name_list = []
+        for img_name in os.listdir(root_dir)[:]:
+            # 对处理文件的类型进行过滤
+            if re.search(file_suffix, img_name) is None:
+                continue
+            img_path = os.path.join(root_dir,img_name)
+            mean, std = get_img_feature(model, img_path)
+            mean = mean.to('cpu').numpy().reshape(-1)
+            std = std.to('cpu').numpy().reshape(-1)
+            feature = np.concatenate((mean, std), 0)
+            print(feature.shape)
+            feature_list.append(feature)
+            name_list.append(re.match(r'(.*)_(.*)\.(.*)',img_name).group(2)[1:])
 
-    # 特征绘图
-    feature_list = np.array(feature_list)
-    name_list = np.array(name_list)
-    feature_list_tsne, _ = do_tsne(feature_list)
-    plot_embedding(feature_list_tsne, text=name_list,title="tsne")
-    feature_list_umap, _ = do_umap(feature_list)
-    plot_embedding(feature_list_umap, text=name_list,title="umap")
-    cv2.waitKey()
+        # 特征绘图
+        feature_list = np.array(feature_list)
+        name_list = np.array(name_list)
+        feature_list_tsne, _ = do_tsne(feature_list)
+        plot_embedding(feature_list_tsne, text=name_list,title="tsne")
+        feature_list_umap, _ = do_umap(feature_list)
+        plot_embedding(feature_list_umap, text=name_list,title="umap")
+        cv2.waitKey()
